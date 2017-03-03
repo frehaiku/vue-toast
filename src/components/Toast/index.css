@@ -1,0 +1,30 @@
+#toast-container {
+  position: fixed;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  -webkit-transition: all .3s ease-out;
+  transition: all .3s ease-out;
+  color: #fff;
+  font-size: 17px;
+  border-radius: 5px;
+  font-family: 'Microsoft YaHei';
+}
+
+.hide-op {
+  opacity: 0;
+}
+
+.show-op {
+  opacity: 1;
+}
+
+.hide-scale {
+  -webkit-transform: scale(0);
+  transform: scale(0);
+}
+
+.show-scale {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
