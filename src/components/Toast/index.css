@@ -10,21 +10,3 @@
   border-radius: 5px;
   font-family: 'Microsoft YaHei';
 }
-
-.hide-op {
-  opacity: 0;
-}
-
-.show-op {
-  opacity: 1;
-}
-
-.hide-scale {
-  -webkit-transform: scale(0);
-  transform: scale(0);
-}
-
-.show-scale {
-  -webkit-transform: scale(1);
-  transform: scale(1);
-}

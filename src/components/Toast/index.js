@@ -2,8 +2,48 @@ import './index.css'
 import template from './template.html'
 
 let defaultOpt = {
-  onHide: function () {},
-  onShow: function () {}
+  onHide: function () {
+  },
+  onShow: function () {
+  }
+}
+
+let entireShift = {
+  scale: {
+    common: {},
+    before: {
+      transform: 'scale(0)'
+    },
+    after: {
+      transform: 'scale(1)'
+    }
+  },
+
+  opacity: {
+    common: {},
+    before: {
+      display: 'none',
+      opacity: 0
+    },
+    after: {
+      display: 'block',
+      opacity: 1
+    }
+  }
+}
+
+const posShift = {
+  'bottom middle': {
+    bottom: '10%',
+    left: '50%',
+    transform: 'translateX(-50%)'
+  },
+
+  'top middle': {
+    top: '10%',
+    left: '50%',
+    transform: 'translateX(-50%)'
+  },
 }
 
 export default {
@@ -54,11 +94,7 @@ export default {
    */
   computed: {
     toaststyle () {
-      let defaultCss = {
-        left: '50%'
-      }
-      const self = this
-      return Object.assign({}, self.styleHandler(self.show, self.animate, self.position), defaultCss)
+      return Object.assign({}, this.styleHandler(this.show))
     }
   },
 
@@ -69,28 +105,40 @@ export default {
   },
 
   methods: {
-    styleHandler (show, an, pos) {
-      let scaleConf = show ? 1 : 0
-      // When it is not no-object,the second item of the array is used as the string to be added
-      let transform = (an === 'scale')
-        ? [`scale(${scaleConf})`, 'transform: translateX(-50%)']
-        : {opacity: scaleConf, transform: 'translateX(-50%)'}
-      let posConf = (pos === 'bottom middle')
-        ? {bottom: '10%'}
-        : {top: '10%'}
+    styleHandler (isShow) {
+      const posConf = this.position,
+        animateConf = this.animate
 
-      // To deal with the scale add to transition
-      let transformObj = {}
+      let config = entireShift[animateConf]
+      config.common = posShift[posConf]
 
-      const toStr = Object.prototype.toString
-      if (toStr.call(transform) === '[object Array]') {
-        let link = `${transform[1]} ${transform[0]}`.split(':')
-        transformObj[link[0]] = link[1]
-      } else {
-        transformObj = Object.assign({}, transform)
+      function _concatAttr(needAttr, goalAttr, obj) {
+
+        for (var need in obj[needAttr]) {
+          const nonceNeed = obj[needAttr][need]
+          const goal = obj[goalAttr]
+          const nonceGoal = goal[need]
+          if (need === 'transform' &&
+            need in goal) {
+            console.log(`${nonceGoal} ${nonceNeed}`)
+            // remove extra same property
+            obj[goalAttr][need] = `${nonceGoal} ${nonceNeed}`.replace(/\b([^\s]+)\s+\1/, '$1')
+            console.log(obj[goalAttr][need])
+
+          } else {
+            obj[goalAttr][need] = nonceNeed
+          }
+        }
       }
 
-      return Object.assign({}, transformObj, posConf)
+      const goalAttr = isShow ? 'after' : 'before'
+      _concatAttr(
+        'common',
+        goalAttr,
+        config
+      )
+
+      return config[goalAttr]
     },
     showMessage (txt = '') {
       this.options.onShow()
