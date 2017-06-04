@@ -1,13 +1,6 @@
 import './index.css'
 import template from './template.html'
 
-let defaultOpt = {
-  onHide: function () {
-  },
-  onShow: function () {
-  }
-}
-
 let entireShift = {
   scale: {
     common: {},
@@ -55,7 +48,6 @@ export default {
      */
     message: {
       type: String,
-      twoWay: true
     },
 
     /**
@@ -84,8 +76,13 @@ export default {
 
     options: {
       type: Object,
-      coerce (val) {
-        return Object.assign({}, defaultOpt, val)
+      default: function () {
+        return {
+          onHide: function () {
+          },
+          onShow: function () {
+          }
+        }
       }
     }
   },
@@ -168,7 +165,7 @@ export default {
     }
   },
 
-  detached () {
+  destroyed () {
     this._clearTime()
   }
 }
