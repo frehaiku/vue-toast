@@ -1,6 +1,7 @@
 # Vue-Toast
 
-> A Vue component for showing friendly operation tip to user. :white_check_mark:
+> A Vue component for showing friendly operation tip to user.  
+[vue2+ version is working](https://github.com/frehaiku/vue-toast/tree/vue2)
 
 ## Install
 
